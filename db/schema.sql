@@ -1,10 +1,10 @@
-create  database burger_db;
+create  database burgers_db;
 
-use burger_db;
+use burgers_db;
 
-CREATE TABLE `burgers` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `burger_name` varchar(45) NOT NULL,
-  `devoured` tinyint(1) NOT NULL,
+CREATE TABLE burgers (
+  id int(11) NOT NULL AUTO_INCREMENT,
+  burger_name varchar(45) NOT NULL,
+  devoured BOOLEAN DEFAULT false,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+);
