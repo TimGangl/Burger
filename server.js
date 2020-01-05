@@ -14,11 +14,12 @@ app.use(express.json());
 
 app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
-
+//imports routes give server access
 var routes = require("./controllers/burgers_controller.js");
 
-//app.use(routes);
-
+app.use(routes);
+//start server 
 app.listen(PORT, function () {
+  //log (server-side) when server starts
   console.log("Server listening on: http://localhost:" + PORT);
-})
+});

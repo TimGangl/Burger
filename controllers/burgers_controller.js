@@ -6,7 +6,7 @@ var burger = require("../models/burger.js");
 
 //Create routes and logic 
 router.get("/", function (req, res) {
-  burger.all(function (data) {
+  burger.selectAll(function (data) {
     var hbsObject = {
       burgers: data
     };
@@ -16,12 +16,42 @@ router.get("/", function (req, res) {
 });
 
 router.post("/api/burgers", function (req, res) {
-  burger.creat([
-    "name", "Western-Bacon-Chesseburger"
-  ], [
-    req.body.name,
-    req.body.Western - Bacon - Chesseburger
-  ], function (result) {
-    res.json({ id: result.insertId })
+  burger.insertOne(
+    ["burger_name", "devoured"],
+    function (results) {
+      //send back id of new burger
+      res.json({ id: result.insertId });
+    }
+  );
+});
+
+router.put("/api/burgers/:id", function (req, res) {
+  var condition = "id = " + req.params.id;
+
+  console.log("condition", condition);
+  burger.updateOne({ devoured: req.body.devoured }, condtion, function (
+    result
+  ) {
+    if (result.changedRows === 0) {
+      return res.status(404).end();
+    } else {
+      res.status(200).end();
+    }
+  });
+
+  router.delete("/api/burgers/:id", function (req, res) {
+    var condition = "id = " + req.params.id;
+    console.log("condition", condition);
+
+    burger.deleteOne(condition, function (result) {
+      if (result.changedRows === 0) {
+        return res.status(404).end();
+      } else {
+        res.status(200).end();
+      }
+    });
   });
 });
+
+//export routes for server.js
+module.exports = router;
