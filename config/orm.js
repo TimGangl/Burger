@@ -1,5 +1,4 @@
-//Import MYSQL connection
-var connection = require("../config/connection.js");
+var connection = require("../config/connection");
 
 function createQmarks(num) {
   var arr = [];
@@ -26,6 +25,7 @@ function translateSql(ob) {
 var orm = {
   selectAll: function (table, cb) {
     var dbQuery = "SELECT * FROM " + table + ";";
+
     connection.query(dbQuery, function (err, res) {
       if (err) {
         throw err;
@@ -34,9 +34,18 @@ var orm = {
     });
   },
   insertOne: function (table, cols, vals, cb) {
-    var dbQuery = "INSERT INTO " + table + " (" + cols.toString() + ") " + "VALUES (" + createQmarks(vals.length) + ") ";
+    var dbQuery =
+      "INSERT INTO " +
+      table +
+      " (" +
+      cols.toString() +
+      ") " +
+      "VALUES (" +
+      createQmarks(vals.length) +
+      ") ";
+
     console.log(dbQuery);
-    connection.query(dbQuery, function (err, res) {
+    connection.query(dbQuery, vals, function (err, res) {
       if (err) {
         throw err;
       }
@@ -45,8 +54,15 @@ var orm = {
   },
   updateOne: function (table, objColVals, condition, cb) {
     var dbQuery =
-      "UPDATE " + table + "SET " + translateSql(objColVals) + "Where " + condition;
+      "UPDATE " +
+      table +
+      " SET " +
+      translateSql(objColVals) +
+      " WHERE " +
+      condition;
+
     console.log(dbQuery);
+
     connection.query(dbQuery, function (err, res) {
       if (err) {
         throw err;
@@ -54,7 +70,6 @@ var orm = {
       cb(res);
     });
   },
-
   deleteOne: function (table, condition, cb) {
     var dbQuery = "DELETE FROM " + table + " WHERE " + condition;
     console.log(dbQuery);
@@ -66,6 +81,5 @@ var orm = {
       cb(res);
     });
   }
-}
-
+};
 module.exports = orm;
